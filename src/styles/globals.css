@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* :root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+} */
+/* 
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+} */
+
+@layer base {
+  body {
+    @apply antialiased dark:bg-cape-cod-950 bg-neutral-300;
+  }
+}
+
+@layer components {
+  .input-primary {
+    @apply px-4 py-3 pe-12 mt-1 w-full rounded-md;
+    @apply border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200;
+    @apply autofill:bg-gray-800;
+  }
+
+  .input-primary:-webkit-autofill,
+  .input-primary:-webkit-autofill:hover,
+  .input-primary:-webkit-autofill:focus,
+  .input-primary:-webkit-autofill,
+  .input-primary:-webkit-autofill:hover,
+  .input-primary:-webkit-autofill:focus,
+  .input-primary:-webkit-autofill,
+  .input-primary:-webkit-autofill:hover,
+  .input-primary:-webkit-autofill:focus {
+    @apply shadow-[inset_0_0_0px_1000px_hex(#737373)] text-white text-fill-white focus:text-fill-white active:text-fill-white;
+    @apply transition-[background-color] duration-[5000s] delay-0 ease-in-out;
+  }
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: #ff3d00;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

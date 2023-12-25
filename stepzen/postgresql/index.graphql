@@ -1,0 +1,117 @@
+type Users {
+  bio: String
+  birthday: Date
+  created_at: DateTime!
+  email: String!
+  id: ID!
+  name: String
+  username: String
+  avatar: String
+}
+
+"""
+The following queries are just a set of examples of how to access your schema.
+Feel free to modify them or aggregate more.
+"""
+type Query {
+  " Queries for type 'Users' "
+  user(id: ID!): Users
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "users"
+      configuration: "postgresql_config"
+    )
+  usersList: [Users]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "users"
+      configuration: "postgresql_config"
+    )
+  usersPaginatedList(first: Int, after: Int): [Users]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "avatar", "bio", "birthday", "created_at", "email", "id", "name", "username" FROM "users" LIMIT $1 OFFSET $2
+      """
+      configuration: "postgresql_config"
+    )
+  usersUsingusers_email_key(email: String!): Users
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "bio", "birthday", "created_at", "email", "id", "name", "username" FROM "users" WHERE "email" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  usersUsingusers_username_key(username: String!): Users
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "bio", "birthday", "created_at", "email", "id", "name", "username" FROM "users" WHERE "username" = $1
+      """
+      configuration: "postgresql_config"
+    )
+}
+
+"""
+The following mutations are just a set of examples of how to access your schema.
+Feel free to modify them or aggregate more.
+"""
+type Mutation {
+  " Mutations for type 'Users' "
+  deleteUsers(id: ID!): Users
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "users"
+      dml: DELETE
+      configuration: "postgresql_config"
+    )
+  insertUsers(
+    birthday: Date
+    name: String!
+    email: String!
+    username: String!
+    bio: String
+    id: ID!
+    created_at: DateTime!
+  ): Users
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "users"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+  updateUsers(
+    id: ID!
+    bio: String
+    birthday: Date
+    created_at: DateTime
+    email: String
+    name: String
+    username: String
+  ): Users
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      UPDATE "users" SET
+        "bio" = COALESCE($2, "bio"),
+        "birthday" = COALESCE($3, "birthday"),
+        "created_at" = COALESCE($4, "created_at"),
+        "email" = COALESCE($5, "email"),
+        "name" = COALESCE($6, "name"),
+        "username" = COALESCE($7, "username")
+      WHERE
+        "id" = $1
+      RETURNING *
+      """
+      configuration: "postgresql_config"
+    )
+}
